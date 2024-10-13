@@ -9,7 +9,7 @@ blueprint:
       selector:
         device:
           manufacturer: eWeLink
-          model: SNZB-01P
+          model: SNZB-02P
           multiple: false
     press_action:
       name: Press Action
