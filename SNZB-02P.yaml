@@ -1,5 +1,5 @@
 blueprint:
-  name: Sonoff Zigbee wireless Button SNZB-02P
+  name: Sonoff Zigbee wireless Button SNZB-01P
   description: Setup actions for three functions of the SONOFF Zigbee button with Press ,Double Press, and long press.
   domain: automation
   input:
@@ -9,7 +9,7 @@ blueprint:
       selector:
         device:
           manufacturer: eWeLink
-          model: SNZB-02P
+          model: SNZB-01P
           multiple: false
     press_action:
       name: Press Action
