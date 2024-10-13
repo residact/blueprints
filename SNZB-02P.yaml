@@ -8,8 +8,8 @@ blueprint:
       description: The button to configure.
       selector:
         device:
-          manufacturer: eWeLink
-          model: SNZB-01P
+          integration: zha  # Vous pouvez spécifier l'intégration ZHA au lieu du fabricant
+          domain: zha  # Vous pouvez aussi définir un domaine général si le bouton est reconnu par ZHA
           multiple: false
     press_action:
       name: Press Action
