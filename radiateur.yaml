@@ -1,5 +1,5 @@
 blueprint:
-  name: Radiateur
+  name: Chauffage Up
   description: Active le chauffage si la température est en dessous d'un certain seuil.
   domain: automation
   input:
@@ -7,10 +7,8 @@ blueprint:
       name: Heures de déclenchement
       description: Liste des heures où l'automatisation doit être déclenchée (format HH:MM:SS)
       selector:
-        object:
-          multiple:
-            label: Heure de déclenchement
-            type: time
+        time: {}
+
     temperature_sensor:
       name: Capteur de température
       description: Sélectionnez le capteur de température pour vérifier la condition
@@ -35,8 +33,13 @@ blueprint:
           mode: slider
 
 trigger:
-  - platform: time
-    at: !input trigger_times
+  - platform: template
+    value_template: >-
+      {% for time in (input.trigger_times | default([])) %}
+        {% if states('sensor.time') == time %}
+          true
+        {% endif %}
+      {% endfor %}
 
 condition:
   - condition: numeric_state
