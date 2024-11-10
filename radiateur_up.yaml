@@ -3,46 +3,65 @@ blueprint:
   description: Active le chauffage dans la chambre si la température est en dessous d'un certain seuil défini par une entrée.
   domain: automation
   input:
+    room_name:
+      name: Nom de la chambre
+      description: Nom de la chambre pour le titre de l'automatisation
+      default: ''
+      selector:
+        text: {}
     trigger_time_1:
       name: Heure de déclenchement 1
-      description: Première heure où l'automatisation doit être déclenchée (format HH:MM:SS)
+      description: Première heure où l'automatisation doit être déclenchée (format HH:MM)
+      default: "18:00"
       selector:
         time: {}
     trigger_time_2:
       name: Heure de déclenchement 2
-      description: Deuxième heure où l'automatisation doit être déclenchée (format HH:MM:SS)
+      description: Deuxième heure où l'automatisation doit être déclenchée (format HH:MM)
+      default: "19:00"
       selector:
         time: {}
     trigger_time_3:
       name: Heure de déclenchement 3
-      description: Troisième heure où l'automatisation doit être déclenchée (format HH:MM:SS)
+      description: Troisième heure où l'automatisation doit être déclenchée (format HH:MM)
+      default: "20:00"
       selector:
         time: {}
     trigger_time_4:
       name: Heure de déclenchement 4
-      description: Quatrième heure où l'automatisation doit être déclenchée (format HH:MM:SS)
+      description: Quatrième heure où l'automatisation doit être déclenchée (format HH:MM)
+      default: "06:00"
       selector:
         time: {}
-
     temperature_sensor:
       name: Capteur de température
       description: Sélectionnez le capteur de température pour vérifier la condition
       selector:
         entity:
           domain: sensor
-    switch_device:
-      name: Interrupteur de chauffage
-      description: Sélectionnez l'interrupteur de chauffage à activer
-      selector:
-        entity:
-          domain: switch
     temperature_threshold_input:
       name: Variable de seuil de température
-      description: Sélectionnez l'entrée qui contient le seuil de température en dessous duquel le chauffage doit s'activer
-      default: ''
+      description: Sélectionnez l'entrée qui contient le seuil de température
       selector:
         entity:
           domain: input_number
+    switch_devices:
+      name: Radiateurs à allumer
+      description: Sélectionnez les radiateurs à allumer lorsque la condition est remplie
+      selector:
+        target:
+          entity:
+            domain: switch
+            multiple: true
+    icon:
+      name: Icône de l'automatisation
+      description: Icône à utiliser pour l'automatisation
+      default: "mdi:radiator"
+      selector:
+        icon: {}
+
+variables:
+  room_name: !input room_name
 
 trigger:
   - platform: time
@@ -57,14 +76,16 @@ trigger:
 condition:
   - condition: template
     value_template: >
-      {{ states(temperature_sensor) | float < states(temperature_threshold_input) | float }}
+      {{ states(temperature_sensor) | float(0) < states(temperature_threshold_input) | float(0) }}
   - condition: state
-    entity_id: !input switch_device
+    entity_id: !input switch_devices
     state: 'off'
 
 action:
   - service: switch.turn_on
-    target:
-      entity_id: !input switch_device
+    target: !input switch_devices
 
 mode: single
+
+alias: "Chauffage Chambre ({{ room_name }}) UP"
+icon: !input icon
