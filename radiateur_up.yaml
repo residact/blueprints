@@ -47,8 +47,6 @@ blueprint:
         entity:
           domain: switch
 
-variables:
-  room_name: !input room_name
 
 trigger:
   - platform: time
@@ -70,6 +68,6 @@ condition:
 
 action:
   - service: switch.turn_on
-    target: !input switch_devices
+    target: !input switch_device
 
 mode: single
