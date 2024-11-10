@@ -47,7 +47,6 @@ blueprint:
         entity:
           domain: switch
 
-
 trigger:
   - platform: time
     at: !input trigger_time_1
@@ -61,13 +60,14 @@ trigger:
 condition:
   - condition: template
     value_template: >
-      {{ states(temperature_sensor) | float < states(temperature_threshold_input) | float }}
+      {{ states('!input temperature_sensor') | float < states('!input temperature_threshold_input') | float }}
   - condition: state
     entity_id: !input switch_device
     state: 'off'
 
 action:
   - service: switch.turn_on
-    target: !input switch_device
+    target:
+      entity_id: !input switch_device
 
 mode: single
