@@ -52,7 +52,6 @@ blueprint:
         target:
           entity:
             domain: switch
-            multiple: true
     icon:
       name: Icône de l'automatisation
       description: Icône à utiliser pour l'automatisation
@@ -76,10 +75,11 @@ trigger:
 condition:
   - condition: template
     value_template: >
-      {{ states(temperature_sensor) | float(0) < states(temperature_threshold_input) | float(0) }}
-  - condition: state
-    entity_id: !input switch_devices
-    state: 'off'
+      {{ states(''!input temperature_sensor'') | float(0) < states(''!input temperature_threshold_input'') | float(0) }}
+  - condition: template
+    value_template: >
+      {% set switches = expand(!input switch_devices.entity_id) %}
+      {{ switches | selectattr('state', 'eq', 'off') | list | length == switches | length }}
 
 action:
   - service: switch.turn_on
