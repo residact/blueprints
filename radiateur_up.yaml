@@ -1,5 +1,5 @@
 blueprint:
-  name: Chauffage Chambre UP
+  name: Chauffage Chambre - Automatisation
   description: Active le chauffage dans la chambre si la température est en dessous d'un certain seuil défini par une entrée.
   domain: automation
   input:
@@ -57,7 +57,7 @@ trigger:
 condition:
   - condition: template
     value_template: >
-      {{ states(!input temperature_sensor) | float < states(!input temperature_threshold_input) | float }}
+      {{ states(input.temperature_sensor) | float < states(input.temperature_threshold_input) | float }}
   - condition: state
     entity_id: !input switch_device
     state: 'off'
