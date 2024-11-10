@@ -1,11 +1,26 @@
 blueprint:
-  name: Chauffage Up
-  description: Active le chauffage si la température est en dessous d'un certain seuil.
+  name: Chauffage Chambre - Automatisation
+  description: Active le chauffage dans la chambre si la température est en dessous d'un certain seuil.
   domain: automation
   input:
-    trigger_times:
-      name: Heures de déclenchement
-      description: Liste des heures où l'automatisation doit être déclenchée (format HH:MM:SS)
+    trigger_time_1:
+      name: Heure de déclenchement 1
+      description: Première heure où l'automatisation doit être déclenchée (format HH:MM:SS)
+      selector:
+        time: {}
+    trigger_time_2:
+      name: Heure de déclenchement 2
+      description: Deuxième heure où l'automatisation doit être déclenchée (format HH:MM:SS)
+      selector:
+        time: {}
+    trigger_time_3:
+      name: Heure de déclenchement 3
+      description: Troisième heure où l'automatisation doit être déclenchée (format HH:MM:SS)
+      selector:
+        time: {}
+    trigger_time_4:
+      name: Heure de déclenchement 4
+      description: Quatrième heure où l'automatisation doit être déclenchée (format HH:MM:SS)
       selector:
         time: {}
 
@@ -33,13 +48,14 @@ blueprint:
           mode: slider
 
 trigger:
-  - platform: template
-    value_template: >-
-      {% for time in (input.trigger_times | default([])) %}
-        {% if states('sensor.time') == time %}
-          true
-        {% endif %}
-      {% endfor %}
+  - platform: time
+    at: !input trigger_time_1
+  - platform: time
+    at: !input trigger_time_2
+  - platform: time
+    at: !input trigger_time_3
+  - platform: time
+    at: !input trigger_time_4
 
 condition:
   - condition: numeric_state
