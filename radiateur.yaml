@@ -38,9 +38,10 @@ blueprint:
           domain: switch
     temperature_threshold:
       name: Température inférieure
-      description: Seuil de température en dessous duquel le chauffage doit s'activer
-      default: 21
+      description: Seuil de température en dessous duquel le chauffage doit s'activer (numérique ou entité)
       selector:
+        entity:
+          domain: sensor
         number:
           min: 5
           max: 30
@@ -58,9 +59,13 @@ trigger:
     at: !input trigger_time_4
 
 condition:
-  - condition: numeric_state
-    entity_id: !input temperature_sensor
-    below: !input temperature_threshold
+  - condition: template
+    value_template: >
+      {% if states(!input temperature_threshold) is not none %}
+        {{ states('!input temperature_sensor') | float < states('!input temperature_threshold') | float }}
+      {% else %}
+        {{ states('!input temperature_sensor') | float < !input temperature_threshold }}
+      {% endif %}
   - condition: state
     entity_id: !input switch_device
     state: 'off'
