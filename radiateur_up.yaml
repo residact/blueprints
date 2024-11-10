@@ -4,18 +4,6 @@ blueprint:
     Active le chauffage dans la chambre si la température est en dessous d'un certain seuil défini par une entrée.
   domain: automation
   input:
-    room_name:
-      name: Nom de la chambre
-      description: Nom de la chambre pour le titre de l'automatisation
-      default: ''
-      selector:
-        text: {}
-    icon:
-      name: Icône de l'automatisation
-      description: Icône à utiliser pour l'automatisation
-      default: "mdi:radiator"
-      selector:
-        icon: {}
     trigger_time_1:
       name: Heure de déclenchement 1
       description: Première heure de déclenchement (HH:MM)
@@ -52,13 +40,12 @@ blueprint:
       selector:
         entity:
           domain: input_number
-    switch_devices:
-      name: Radiateurs à allumer
-      description: Radiateurs à activer si les conditions sont remplies
+    switch_device:
+      name: Interrupteur de chauffage
+      description: Sélectionnez l'interrupteur de chauffage à activer
       selector:
-        target:
-          entity:
-            domain: switch
+        entity:
+          domain: switch
 
 variables:
   room_name: !input room_name
@@ -76,11 +63,10 @@ trigger:
 condition:
   - condition: template
     value_template: >
-      {{ states( !input temperature_sensor ) | float(0) < states( !input temperature_threshold_input ) | float(0) }}
-  - condition: template
-    value_template: >
-      {% set switches = expand( !input switch_devices ) %}
-      {{ switches | selectattr('state', 'eq', 'off') | list | count == switches | count }}
+      {{ states(temperature_sensor) | float < states(temperature_threshold_input) | float }}
+  - condition: state
+    entity_id: !input switch_device
+    state: 'off'
 
 action:
   - service: switch.turn_on
