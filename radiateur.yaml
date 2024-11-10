@@ -1,0 +1,54 @@
+blueprint:
+  name: Radiateur
+  description: Active le chauffage si la température est en dessous d'un certain seuil.
+  domain: automation
+  input:
+    trigger_times:
+      name: Heures de déclenchement
+      description: Liste des heures où l'automatisation doit être déclenchée (format HH:MM:SS)
+      selector:
+        object:
+          multiple:
+            label: Heure de déclenchement
+            type: time
+    temperature_sensor:
+      name: Capteur de température
+      description: Sélectionnez le capteur de température pour vérifier la condition
+      selector:
+        entity:
+          domain: sensor
+    switch_device:
+      name: Interrupteur de chauffage
+      description: Sélectionnez l'interrupteur de chauffage à activer
+      selector:
+        entity:
+          domain: switch
+    temperature_threshold:
+      name: Température inférieure
+      description: Seuil de température en dessous duquel le chauffage doit s'activer
+      default: 21
+      selector:
+        number:
+          min: 5
+          max: 30
+          unit_of_measurement: °C
+          mode: slider
+
+trigger:
+  - platform: time
+    at: !input trigger_times
+
+condition:
+  - condition: numeric_state
+    entity_id: !input temperature_sensor
+    below: !input temperature_threshold
+  - condition: state
+    entity_id: !input switch_device
+    state: 'off'
+
+action:
+  - service: switch.turn_on
+    target:
+      entity_id: !input switch_device
+
+mode: single
