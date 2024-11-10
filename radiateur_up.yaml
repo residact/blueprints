@@ -1,5 +1,5 @@
 blueprint:
-  name: Chauffage Chambre - Automatisation
+  name: Chauffage Chambre UP
   description: >
     Active le chauffage dans la chambre si la température est en dessous d'un certain seuil défini par une entrée.
   domain: automation
