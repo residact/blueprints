@@ -39,6 +39,7 @@ blueprint:
     temperature_threshold_input:
       name: Variable de seuil de température
       description: Sélectionnez l'entrée qui contient le seuil de température en dessous duquel le chauffage doit s'activer
+      default: ''
       selector:
         entity:
           domain: input_number
