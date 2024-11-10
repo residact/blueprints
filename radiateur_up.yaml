@@ -57,7 +57,7 @@ trigger:
 condition:
   - condition: template
     value_template: >
-      {{ states(input.temperature_sensor) | float < states(input.temperature_threshold_input) | float }}
+      {{ states(temperature_sensor) | float < states(temperature_threshold_input) | float }}
   - condition: state
     entity_id: !input switch_device
     state: 'off'
