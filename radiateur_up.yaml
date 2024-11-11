@@ -77,4 +77,4 @@ action:
     target:
       entity_id: switch_device
 
-mode: single
+mode: single 
