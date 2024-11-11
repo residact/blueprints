@@ -40,18 +40,17 @@ blueprint:
       selector:
         entity:
           domain: input_number
-    switch_devices:
-      name: Radiateurs à allumer
-      description: Sélectionnez les radiateurs à activer
+    switch_device:
+      name: Interrupteur de chauffage
+      description: Sélectionnez l'interrupteur de chauffage à activer
       selector:
-        target:
-          entity:
-            domain: switch
+        entity:
+          domain: switch
 
 variables:
   temperature_sensor: !input temperature_sensor
   temperature_threshold_input: !input temperature_threshold_input
-  switch_devices: !input switch_devices
+  switch_device: !input switch_device
 
 trigger:
   - platform: time
@@ -69,13 +68,13 @@ condition:
       {% set temp = states(temperature_sensor) | float(0) %}
       {% set threshold = states(temperature_threshold_input) | float(0) %}
       {{ temp > 0 and threshold > 0 and temp < threshold }}
-  - condition: template
-    value_template: >
-      {% set switches = expand(switch_devices) %}
-      {{ switches | selectattr('state', 'eq', 'off') | list | count == switches | count }}
+  - condition: state
+    entity_id: switch_device
+    state: 'off'
 
 action:
   - service: switch.turn_on
-    target: switch_devices
+    target:
+      entity_id: switch_device
 
 mode: single
