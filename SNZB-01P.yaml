@@ -42,6 +42,15 @@ blueprint:
           filter:
             # source: https://www.zigbee2mqtt.io/devices/SNZB-01.html#ewelink-snzb-01
             - integration: mqtt
+              manufacturer: SONOFF
+              model: Wireless button
+            - integration: mqtt
+              manufacturer: SONOFF
+              model: Wireless button (SNZB-01)
+            - integration: mqtt
+              manufacturer: SONOFF
+              model: SNZB-01P
+            - integration: mqtt
               manufacturer: eWeLink
               model: Wireless button
             - integration: mqtt
@@ -51,17 +60,8 @@ blueprint:
               manufacturer: eWeLink
               model: SNZB-01
             - integration: mqtt
-              manufacturer: SONOFF
-              model: SNZB-01P
-            - integration: mqtt
               manufacturer: eWeLink
               model: SNZB-01P
-            - integration: mqtt
-              manufacturer: SONOFF
-              model: Wireless button
-            - integration: mqtt
-              manufacturer: SONOFF
-              model: Wireless button (SNZB-01)
             - integration: zha
               manufacturer: eWeLink
               model: WB01
