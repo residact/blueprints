@@ -44,10 +44,6 @@ blueprint:
             - integration: mqtt
               manufacturer: eWeLink
               model: Wireless button
-            # For backwards compatability with z2m 1.x. model_id is added to end of model rather than a seperate attribute in z2m 2.x
-            - integration: mqtt
-              manufacturer: eWeLink
-              model: Wireless button
             - integration: mqtt
               manufacturer: eWeLink
               model: Wireless button (SNZB-01)
@@ -57,6 +53,15 @@ blueprint:
             - integration: mqtt
               manufacturer: SONOFF
               model: SNZB-01P
+            - integration: mqtt
+              manufacturer: eWeLink
+              model: SNZB-01P
+            - integration: mqtt
+              manufacturer: SONOFF
+              model: Wireless button
+            - integration: mqtt
+              manufacturer: SONOFF
+              model: Wireless button (SNZB-01)
             - integration: zha
               manufacturer: eWeLink
               model: WB01
